@@ -1,0 +1,2 @@
+# journalApp
+Learning React+Redux
