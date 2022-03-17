@@ -1,21 +1,25 @@
 import React from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
-import { startLoginWithEmailPassword } from '../../actions/auth';
-import { useForm } from '../../hooks/useForm'
+import { startGoogleLogin, startLoginWithEmailPassword } from '../../actions/auth';
+import { useForm } from '../../hooks/useForm';
 
 export const LoginScreen = () => {
   const dispatch = useDispatch();
-  const [formValues, handleInputChange, reset] = useForm({
+  const {loading} = useSelector(state => state.ui);
+  const [formValues, handleInputChange] = useForm({
     email: 'alekennedypy@gmail.com',
     password:'123456'
   });
   const {email, password} = formValues;
 
   const handleLogin = (e)=>{
-    e.preventDefault();
+    e.preventDefault();    
     dispatch(startLoginWithEmailPassword(email,password));
-    
+  }
+
+  const handlerGoogleLogin = ()=>{
+    dispatch(startGoogleLogin());
   }
 
   return (
@@ -37,7 +41,7 @@ export const LoginScreen = () => {
           className='auth__input'
           value = {password}
           onChange={handleInputChange}></input>
-          <button className='btn btn-primary btn-block' type='submit'>Login</button>          
+          <button className='btn btn-primary btn-block' type='submit' disabled={ loading }>Login</button>          
           <div className='auth__social-networks'>
             <div className=''>
               <p>Login con redes sociales</p>
@@ -45,6 +49,7 @@ export const LoginScreen = () => {
             
             <div 
               className="google-btn"
+              onClick={handlerGoogleLogin}              
                   >
                 <div className="google-icon-wrapper">
                     <img className="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="google button" />
@@ -58,7 +63,7 @@ export const LoginScreen = () => {
           <Link className='link' 
             to='/auth/register'>
               Create new account
-            </Link>
+          </Link>
       </form>
     </>
   )
