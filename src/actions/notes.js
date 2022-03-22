@@ -1,8 +1,11 @@
+import { act } from "react-dom/test-utils";
 import Swal from "sweetalert2";
+import { fileUpload } from "../components/helpers/fileUpload";
 import { loadNotes } from "../components/helpers/loadNotes";
 import { db } from "../firebase/firebase-config";
 import { types } from "../types/types";
 
+//react-journal
 
 export const startNewNote = ()=>{
 
@@ -75,5 +78,27 @@ export const startSaveNotes = (note)=>{
         
 
 
+    }
+}
+
+export const startUploading = (file)=>{
+    return async (dispatch, getState) => {
+        const {active} = getState().notes;
+
+        Swal.fire({
+            title:'Uploading...',
+            text:'Subiendo archivo',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            willOpen: () => {
+                Swal.showLoading();
+            }            
+        })
+
+        const fileUrl = await fileUpload(file);
+        active.url = fileUrl;
+        dispatch(startSaveNotes(active))
+
+        Swal.close();
     }
 }

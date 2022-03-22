@@ -15,6 +15,7 @@ export const JournalEntry = ({id, title, body, date, url}) => {
 
         dispatch(activeNote(id, note));
     }
+    
   return (
     <div className='journal__entry pointer' onClick={handleEntryClick}>
         {
@@ -23,7 +24,7 @@ export const JournalEntry = ({id, title, body, date, url}) => {
                 className='journal__entry-picture' 
                 style={{
                     backgroundSize:'cover',
-                    backgroundImage:`url(${url})`
+                    backgroundImage: `url(${ url })`
                 }}>
             </div>
         }

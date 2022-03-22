@@ -8,7 +8,7 @@ export const NoteScreen = () => {
     const dispatch = useDispatch();
     const {active:note} =useSelector(state => state.notes);
     const [fromValues, handleInputChange, reset] = useForm(note);
-    const {body, title} = fromValues;
+    const {body, title, url} = fromValues;
     const activeId = useRef(note.id);
 
     useEffect(()=>{
@@ -46,7 +46,7 @@ export const NoteScreen = () => {
                 note.url &&
                     <div className='notes__image'>
                         <img
-                            src='https://fondosmil.com/fondo/4278.jpg'
+                            src={url}
                             alt='imagen'
                         ></img>
                     </div>
