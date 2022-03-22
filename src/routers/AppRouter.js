@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { BrowserRouter, Route, Routes, Switch } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { JornalScreen } from '../components/jornal/JornalScreen'
 import { AuthRouter } from './AuthRouter'
 import {firebase} from '../firebase/firebase-config'
@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux'
 import { login } from '../actions/auth'
 import { PublicRoutes } from './PublicRoutes'
 import { PrivateRoute } from './PrivateRoute'
+import { startLoadingNotes } from '../actions/notes'
 
 export const AppRouter = () => {
   const dispatch = useDispatch();
@@ -15,10 +16,11 @@ export const AppRouter = () => {
   const [isLoggerdIn, setLoggedIn] = useState(false);
 
   useEffect( ()=>{
-    firebase.auth().onAuthStateChanged( (user)=> {
+    firebase.auth().onAuthStateChanged( async (user)=> {
         if(user?.uid){
           dispatch(login(user.uid, user.displayName));
-          setLoggedIn(true);
+          setLoggedIn(true);          
+          dispatch(startLoadingNotes(user.uid));
         }else{
           setLoggedIn(false);
         }

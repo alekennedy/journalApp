@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 import { firebase, googleAuthProvider } from '../firebase/firebase-config';
 import {types} from '../types/types';
 import { uiFinishLoading, uiStartLoading } from './ui';
@@ -11,8 +12,9 @@ export const startLoginWithEmailPassword = (email, password)=>{
                 dispatch(uiFinishLoading());
             })
             .catch((err)=>{
-                dispatch(uiFinishLoading());
+                dispatch(uiFinishLoading());                
                 console.log(err);
+                Swal.fire('Error','El usuario o password es incorrecto!','error');
             });
         
     }
@@ -54,6 +56,7 @@ export const startRegisterUserData = (email, password, name)=>{
                 dispatch(uiFinishLoading());
             }).catch((err)=>{
                 console.log(err);
+                Swal.fire('Error','El usuario ya existe!','error');
             });
     }
 }
